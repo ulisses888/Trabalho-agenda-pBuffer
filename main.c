@@ -47,16 +47,16 @@ void menu() {
 	printf("5 - Sair\n\n");
 
 
-	if (scanf_s("%d", (int*)menu) != 1) {
+	if (scanf_s("%d", *menu) != 1) {
 		printf("Erro ao ler a opcao\n");
 		free(pBuffer);
-        free(menu);
+        	free(menu);
 		exit(1);
 	}
 
 	while (getchar() != '\n');
 
-	switch (*((int*)menu))
+	switch (*menu)
 	{
 	case 1:
 		adicionarPessoa();
@@ -76,17 +76,18 @@ void menu() {
 	case 5:
 		printf("\n\nFechando a Agenda\n\n");
 		free(pBuffer);
-        free(menu);
+        	free(menu);
 		exit(0);
 
 	default:
 		printf("Opcao Invalida");
 		break;
 
-    free(menu);
+    
 
 	}
-
+	
+	free(menu);
 }
 void adicionarPessoa() {
 	
