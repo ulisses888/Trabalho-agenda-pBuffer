@@ -112,7 +112,7 @@ void adicionarPessoa() {
 	printf("\n num pessoas %d\n", *numPessoas);
 
 
-	
+
 
 	pBuffer = realloc(pBuffer, (3 * sizeof(int) + 100 * sizeof(char) + 100 * sizeof(char)) + (*numPessoas * 1 * sizeof(int) + 100 * sizeof(char) + 100 * sizeof(char)));
 	if (!pBuffer) {
@@ -131,7 +131,7 @@ void adicionarPessoa() {
 	(char)escrever = (char*)pBuffer + 3 * sizeof(int) + *numPessoas * (sizeof(int) + 200 * sizeof(char)) + 100 * sizeof(char);
 	memcpy(escrever, email, 100 * sizeof(char));
 
-	
+
 
 }
 void removerPessoa() {
@@ -141,8 +141,30 @@ void buscarPessoa() {
 	printf("buscar pessoa");
 }
 void listarPessoas() {
+	int* numPessoas = (int*)pBuffer;
+	int* contador = (int*)pBuffer + 1;
+	int* idade;
+	char* nome;
+	char* email;
+	printf("valor pBuffer %d\n", (*(int*)pBuffer));
+	printf("num pessoas %d\n",*numPessoas);
+	if (*numPessoas == 0) {
+		printf("----------------");
+		printf("\n\nLISTA VAZIA\n\n");
+		printf("----------------");
+	}
+	else {
+		printf("----------------");
+		printf("\n\nLISTA DE PESSOAS:\n\n");
 
+		for (*contador = 0; *contador < *numPessoas; contador++) {
+			nome = (char*)pBuffer + 3 * sizeof(int) + *contador * (sizeof(int) + 200 * sizeof(char));
+			idade = (int*)pBuffer + 2 + (*contador * (sizeof(int) + 200 * sizeof(char)));
+			email = (char*)pBuffer + 3 * sizeof(int) + *contador * (sizeof(int) + 200 * sizeof(char)) + 100 * sizeof(char);
 
+			printf("[%d] Nome = %s | Idade = %d | Email = %s\n", contador + 1, nome, *idade, email);
 
-	printf("listar pessoa");
+		}
+		printf("----------------");
+	}
 }
