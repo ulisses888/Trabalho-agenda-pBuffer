@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <String.h>
+#include <string.h>
 
 void* pBuffer = NULL;
 
@@ -78,7 +78,7 @@ void menu() {
 		printf("Opcao Invalida");
 		break;
 
-		
+
 
 	}
 
@@ -89,6 +89,7 @@ void adicionarPessoa() {
 	int* idade = (int*)pBuffer + 2;
 	char* nome = (char*)pBuffer + 3 * sizeof(int);
 	char* email = (char*)pBuffer + 3 * sizeof(int) + 100 * sizeof(char);
+	void* escrever;
 
 
 
@@ -109,9 +110,9 @@ void adicionarPessoa() {
 	printf("Idade %d\n", *idade);
 
 	printf("\n num pessoas %d\n", *numPessoas);
-	(*(int*)pBuffer)++;
+
+
 	
-	printf("num pos incremento %d", *((int*)pBuffer));
 
 	pBuffer = realloc(pBuffer, (3 * sizeof(int) + 100 * sizeof(char) + 100 * sizeof(char)) + (*numPessoas * 1 * sizeof(int) + 100 * sizeof(char) + 100 * sizeof(char)));
 	if (!pBuffer) {
@@ -119,8 +120,18 @@ void adicionarPessoa() {
 		exit(1);
 	}
 
-	
+	(*(int*)pBuffer)++;
+	numPessoas = (int*)pBuffer;
+	printf("num pos incremento %d", *numPessoas);
 
+	(int*)escrever = (int*)pBuffer + 2 + (*numPessoas * (sizeof(int) + 200 * sizeof(char)));
+	memcpy(escrever, idade, sizeof(int));
+	(char*)escrever = (char*)pBuffer + 3 * sizeof(int) + *numPessoas * (sizeof(int) + 200 * sizeof(char));
+	memcpy(escrever, nome, 100 * sizeof(char));
+	(char)escrever = (char*)pBuffer + 3 * sizeof(int) + *numPessoas * (sizeof(int) + 200 * sizeof(char)) + 100 * sizeof(char);
+	memcpy(escrever, email, 100 * sizeof(char));
+
+	
 
 }
 void removerPessoa() {
@@ -130,5 +141,8 @@ void buscarPessoa() {
 	printf("buscar pessoa");
 }
 void listarPessoas() {
+
+
+
 	printf("listar pessoa");
 }
