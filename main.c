@@ -81,7 +81,7 @@ void menu() {
 
 
 	}
-	
+
 }
 void adicionarPessoa() {
 
@@ -89,7 +89,7 @@ void adicionarPessoa() {
 	int* idadeTemp = (int*)pBuffer + 2;
 	char* nomeTemp = (char*)pBuffer + 3 * sizeof(int);
 	char* emailTemp = (char*)pBuffer + 3 * sizeof(int) + 100 * sizeof(char);
-	void* escrever;
+	void* escrever = NULL;
 
 
 
@@ -109,7 +109,7 @@ void adicionarPessoa() {
 	printf("Email %s\n", emailTemp);
 	printf("Idade %d\n", *idadeTemp);
 
-	pBuffer = realloc(pBuffer, 3 * sizeof(int) + 200 * sizeof(char) + ((*numPessoas +1 ) * (sizeof(int) + 200 * sizeof(char))));
+	pBuffer = realloc(pBuffer, 3 * sizeof(int) + 2 * (100 * sizeof(char)) + ((*numPessoas + 1) * (sizeof(int) + 100 * sizeof(char) + 100 * sizeof(char))));
 	if (!pBuffer) {
 		printf("Erro ao realocar memoria\n");
 		free(pBuffer);
@@ -120,14 +120,14 @@ void adicionarPessoa() {
 	idadeTemp = (int*)pBuffer + 2;
 	nomeTemp = (char*)pBuffer + 3 * sizeof(int);
 	emailTemp = (char*)pBuffer + 3 * sizeof(int) + 100 * sizeof(char);
-	
+
 	(*numPessoas)++;
 
-	escrever = (char*)pBuffer + 2 * sizeof(int) + (*numPessoas * (sizeof(int) + 200 * sizeof(char)));
+	escrever = (char*)pBuffer + 2 * sizeof(int) + (*numPessoas * (sizeof(int) + 100 * sizeof(char) + 100 * sizeof(char)));
 	memcpy(escrever, idadeTemp, sizeof(int));
-	escrever = (char*)pBuffer + 2 * sizeof(int) + (*numPessoas * (sizeof(int) + 200 * sizeof(char)));
+	escrever = (char*)pBuffer + 2 * sizeof(int) + (*numPessoas * (sizeof(int) + 100 * sizeof(char)+ 100 * sizeof(char)));
 	memcpy(escrever, nomeTemp, 100 * sizeof(char));
-	escrever = (char*)pBuffer + 2 * sizeof(int) + *numPessoas * (sizeof(int) + 200 * sizeof(char)) + 100 * sizeof(char);
+	escrever = (char*)pBuffer + 2 * sizeof(int) + *numPessoas * (sizeof(int) + 100 * sizeof(char) + 100 * sizeof(char)) + 100 * sizeof(char);
 	memcpy(escrever, emailTemp, 100 * sizeof(char));
 
 
@@ -150,7 +150,7 @@ void listarPessoas() {
 	char* email;
 
 	printf("valor pBuffer %d\n", (*(int*)pBuffer));
-	printf("num pessoas %d\n",*numPessoas);
+	printf("num pessoas %d\n", *numPessoas);
 	if (*numPessoas == 0) {
 		printf("----------------");
 		printf("\n\nLISTA VAZIA\n\n");
@@ -161,10 +161,10 @@ void listarPessoas() {
 		printf("\n\nLISTA DE PESSOAS:\n\n");
 
 		for (*contador = 0; *contador < *numPessoas; (*contador)++) {
-			nome = (char*)pBuffer + 3 * sizeof(int) + *contador * (sizeof(int) + 200 * sizeof(char));
-			idadeEndereco = (char*)pBuffer + 2 * sizeof(int) + (*contador * (sizeof(int) + 200 * sizeof(char)));
+			nome = (char*)pBuffer + 3 * sizeof(int) + *contador * (sizeof(int) + 2 * (100 * sizeof(char)));
+			idadeEndereco = (char*)pBuffer + 2 * sizeof(int) + (*contador * (sizeof(int) + 2 * (100 * sizeof(char))));
 			idade = (int*)idadeEndereco;
-			email = (char*)pBuffer + 3 * sizeof(int) + *contador * (sizeof(int) + 200 * sizeof(char)) + 100 * sizeof(char);
+			email = (char*)pBuffer + 3 * sizeof(int) + *contador * (sizeof(int) + 2 * (100 * sizeof(char))) + 100 * sizeof(char);
 
 			printf("[%d] Nome = %s | Idade = %d | Email = %s\n", *contador + 1, nome, *idade, email);
 
