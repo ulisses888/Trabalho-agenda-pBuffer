@@ -104,6 +104,7 @@ void adicionarPessoa() {
 
 	printf("\nDigite o email da pessoa: ");
 	fgets(emailTemp, 100, stdin);
+	emailTemp[strcspn(emailTemp, "\n")] = 0;
 
 	printf("Nome %s\n", nomeTemp);
 	printf("Email %s\n", emailTemp);
@@ -125,9 +126,9 @@ void adicionarPessoa() {
 
 	escrever = (char*)pBuffer + 2 * sizeof(int) + (*numPessoas * (sizeof(int) + 100 * sizeof(char) + 100 * sizeof(char)));
 	memcpy(escrever, idadeTemp, sizeof(int));
-	escrever = (char*)pBuffer + 2 * sizeof(int) + (*numPessoas * (sizeof(int) + 100 * sizeof(char)+ 100 * sizeof(char)));
+	escrever = (char*)pBuffer + 3 * sizeof(int) + (*numPessoas * (sizeof(int) + 100 * sizeof(char)+ 100 * sizeof(char)));
 	memcpy(escrever, nomeTemp, 100 * sizeof(char));
-	escrever = (char*)pBuffer + 2 * sizeof(int) + *numPessoas * (sizeof(int) + 100 * sizeof(char) + 100 * sizeof(char)) + 100 * sizeof(char);
+	escrever = (char*)pBuffer + 3 * sizeof(int) + *numPessoas * (sizeof(int) + 100 * sizeof(char) + 100 * sizeof(char)) + 100 * sizeof(char);
 	memcpy(escrever, emailTemp, 100 * sizeof(char));
 
 
