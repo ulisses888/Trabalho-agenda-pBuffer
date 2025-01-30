@@ -30,8 +30,6 @@ void main() {
 
 
 }
-
-
 void menu() {
 
 	int* menu;
@@ -92,8 +90,10 @@ void adicionarPessoa() {
 	char* nomeTemp = (char*)pBuffer + 3 * sizeof(int);
 	char* emailTemp = (char*)pBuffer + 3 * sizeof(int) + 100 * sizeof(char);
 	void* escrever = NULL;
+	void* menu = (int)pBuffer + 1;
 
 
+	
 
 
 	printf("\nDigite o nome completo da pessoa: (max 100 caracteres) ");
@@ -108,9 +108,9 @@ void adicionarPessoa() {
 	fgets(emailTemp, 100, stdin);
 	emailTemp[strcspn(emailTemp, "\n")] = 0;
 
-	printf("Nome %s\n", nomeTemp);
-	printf("Email %s\n", emailTemp);
-	printf("Idade %d\n", *idadeTemp);
+	printf("\nNome %s\n", nomeTemp);
+	printf("\nEmail %s\n", emailTemp);
+	printf("\nIdade %d\n", *idadeTemp);
 
 	pBuffer = realloc(pBuffer, 3 * sizeof(int) + 2 * (100 * sizeof(char)) + ((*numPessoas + 1) * (sizeof(int) + 100 * sizeof(char) + 100 * sizeof(char))));
 	if (!pBuffer) {
@@ -193,8 +193,6 @@ void listarPessoas() {
 	char* nome;
 	char* email;
 
-	printf("valor pBuffer %d\n", (*(int*)pBuffer));
-	printf("num pessoas %d\n", *numPessoas);
 	if (*numPessoas == 0) {
 		printf("----------------");
 		printf("\n\nLISTA VAZIA\n\n");
@@ -216,17 +214,88 @@ void listarPessoas() {
 		printf("----------------");
 	}
 }
-
-
 void buscaNome() {
+
+	int* numPessoas = (int*)pBuffer;
+	int* contador = (int*)pBuffer + 1;
+	char* nomeGuardado;
+	int* posicao = (int*)pBuffer + 2;
+	
+
+	int* idade;
+	char* idadeEndereco;
+	char* nome;
+	char* email;
+
+	*posicao = -1;
 
 	char* nomeTemp = (char*)pBuffer + 3 * sizeof(int);
 	printf("\nDigite o nome completo da pessoa: (max 100 caracteres) ");
 	fgets(nomeTemp, 100, stdin);
 	nomeTemp[strcspn(nomeTemp, "\n")] = 0;
 
+	for (*contador = 0; *contador < *numPessoas; (*contador)++) {
+		nomeGuardado = (char*)pBuffer + 3 * sizeof(int) + *contador * (sizeof(int) + 2 * (100 * sizeof(char)));
+		if (strcmp(nomeTemp, nomeGuardado) == 0) {
+			*posicao = *contador;
+			break;
+		}
+
+	}
+
+	if (*posicao != -1) {
+		nome = (char*)pBuffer + 3 * sizeof(int) + *posicao * (sizeof(int) + 2 * (100 * sizeof(char)));
+		idadeEndereco = (char*)pBuffer + 2 * sizeof(int) + (*posicao * (sizeof(int) + 2 * (100 * sizeof(char))));
+		idade = (int*)idadeEndereco;
+		email = (char*)pBuffer + 3 * sizeof(int) + *posicao * (sizeof(int) + 2 * (100 * sizeof(char))) + 100 * sizeof(char);
+
+		printf("[%d] Nome = %s | Idade = %d | Email = %s\n", *contador + 1, nome, *idade, email);
+	}
+	else {
+		printf("\nNome nao encontrado\n");
+	}
+
+
 }
 void buscaEmail() {
+
+	int* numPessoas = (int*)pBuffer;
+	int* contador = (int*)pBuffer + 1;
+	char* emailGuardado;
+	int* posicao = (int*)pBuffer + 2;
+	int* idade;
+	char* idadeEndereco;
+	char* nome;
+	char* email;
+
+	*posicao = -1;
+
+	char* emailTemp = (char*)pBuffer + 3 * sizeof(int) + 100;
+
+	printf("\nDigite o email da pessoa: ");
+	fgets(emailTemp, 100, stdin);
+	emailTemp[strcspn(emailTemp, "\n")] = 0;
+
+	for (*contador = 0; *contador < *numPessoas; (*contador)++) {
+		emailGuardado = (char*)pBuffer + 3 * sizeof(int) + (*contador * (sizeof(int) + 2 * (100 * sizeof(char)))) + 100 * sizeof(char);
+		if (strcmp(emailTemp, emailGuardado) == 0) {
+			*posicao = *contador;
+			break;
+		}
+
+	}
+
+	if (*posicao != -1) {
+		nome = (char*)pBuffer + 3 * sizeof(int) + *posicao * (sizeof(int) + 2 * (100 * sizeof(char)));
+		idadeEndereco = (char*)pBuffer + 2 * sizeof(int) + (*posicao * (sizeof(int) + 2 * (100 * sizeof(char))));
+		idade = (int*)idadeEndereco;
+		email = (char*)pBuffer + 3 * sizeof(int) + *posicao * (sizeof(int) + 2 * (100 * sizeof(char))) + 100 * sizeof(char);
+
+		printf("[%d] Nome = %s | Idade = %d | Email = %s\n", *contador + 1, nome, *idade, email);
+	}
+	else {
+		printf("\nEmail nao encontrado\n");
+	}
 
 
 }
