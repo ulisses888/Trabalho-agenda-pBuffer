@@ -9,6 +9,8 @@ void removerPessoa();
 void buscarPessoa();
 void listarPessoas();
 void menu();
+void buscaNome();
+void buscaEmail();
 
 
 void main() {
@@ -126,7 +128,7 @@ void adicionarPessoa() {
 
 	escrever = (char*)pBuffer + 2 * sizeof(int) + (*numPessoas * (sizeof(int) + 100 * sizeof(char) + 100 * sizeof(char)));
 	memcpy(escrever, idadeTemp, sizeof(int));
-	escrever = (char*)pBuffer + 3 * sizeof(int) + (*numPessoas * (sizeof(int) + 100 * sizeof(char)+ 100 * sizeof(char)));
+	escrever = (char*)pBuffer + 3 * sizeof(int) + (*numPessoas * (sizeof(int) + 100 * sizeof(char) + 100 * sizeof(char)));
 	memcpy(escrever, nomeTemp, 100 * sizeof(char));
 	escrever = (char*)pBuffer + 3 * sizeof(int) + *numPessoas * (sizeof(int) + 100 * sizeof(char) + 100 * sizeof(char)) + 100 * sizeof(char);
 	memcpy(escrever, emailTemp, 100 * sizeof(char));
@@ -140,7 +142,48 @@ void removerPessoa() {
 	printf("remover pessoa");
 }
 void buscarPessoa() {
-	printf("buscar pessoa");
+
+
+	if (*((int*)pBuffer) == 0) {
+		printf("\nPrimeiro voce precisa adicionar um nome na lista\n");
+	}
+	else {
+
+
+		printf("\nEscolha o modo de busca:\n");
+		printf("1 - Por nome\n");
+		printf("2 - Por email\n");
+
+
+		int* menu;
+		menu = ((int*)pBuffer + 1);
+
+		if (scanf_s("%d", menu) != 1) {
+			printf("Erro ao ler a opcao\n");
+			free(pBuffer);
+			exit(1);
+		}
+
+		while (getchar() != '\n');
+
+		switch (*menu)
+		{
+		case 1:
+			buscaNome();
+			break;
+
+		case 2:
+
+			buscaEmail();
+			break;
+
+		default:
+			printf("\nOpcao invalida\n");
+			break;
+		}
+
+
+	}
 }
 void listarPessoas() {
 	int* numPessoas = (int*)pBuffer;
@@ -172,4 +215,18 @@ void listarPessoas() {
 		}
 		printf("----------------");
 	}
+}
+
+
+void buscaNome() {
+
+	char* nomeTemp = (char*)pBuffer + 3 * sizeof(int);
+	printf("\nDigite o nome completo da pessoa: (max 100 caracteres) ");
+	fgets(nomeTemp, 100, stdin);
+	nomeTemp[strcspn(nomeTemp, "\n")] = 0;
+
+}
+void buscaEmail() {
+
+
 }
