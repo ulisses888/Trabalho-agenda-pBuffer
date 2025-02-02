@@ -28,6 +28,7 @@ int main() {
 
 	if (!pBuffer) {
 		printf("Erro ao alocar memória\n");
+		free(pBuffer);
 		exit(1);
 	}
 
