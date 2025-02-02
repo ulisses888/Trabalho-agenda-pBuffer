@@ -105,7 +105,7 @@ void adicionarPessoa() {
 	char* nomeTemp = (char*)idadeTemp + sizeof(int);
 	char* emailTemp = nomeTemp + TamanhoNome;
 
-	printf("\nDigite o nome completo da pessoa com no máximo 100 caracteres: ");
+	printf("\nDigite o nome completo da pessoa com no maximo 100 caracteres: ");
 	fgets(nomeTemp, TamanhoNome, stdin);
 	nomeTemp[strcspn(nomeTemp, "\n")] = '\0';
 
@@ -133,7 +133,56 @@ void adicionarPessoa() {
 
 	printf("\nPessoa adicionada com sucesso!\n");
 }
-void removerPessoa() {}
+void removerPessoa() {
+	listarTodos();
+	if (*contadorPessoas > 0) {
+		int* opcao;
+		opcao = (int*)pBuffer + 2;
+
+		printf("\n-----------------------------------------");
+		printf("\nDigite o numero do contato que deseja remover:");
+		if (scanf_s("%d", opcao) != 1) {
+			printf("Erro ao ler a opcao\n");
+			free(pBuffer);
+			exit(1);
+		}
+		while (getchar() != '\n');
+
+		if (*opcao < 1 || *opcao > *contadorPessoas) {
+			printf("\n\nContato invalido\n");
+			return;
+		}
+		(*opcao)--;
+
+		for (*opcao;*opcao < *contadorPessoas;(*opcao)++) {
+			void* proximaPessoa = (char*)pBuffer + Base + EspacoTemporario + ((*opcao + 1) * TamanhoPessoa);
+			void* pessoaAtual = (char*)pBuffer + Base + EspacoTemporario + (*opcao * TamanhoPessoa);
+			memmove(pessoaAtual, proximaPessoa, TamanhoPessoa);
+
+		}
+
+		(*contadorPessoas)--;
+
+		void* bufferTemp = realloc(pBuffer, Realocar);
+		if (!bufferTemp) {
+			printf("Erro ao alocar memória\n");
+			free(pBuffer);
+			exit(1);
+		}
+		pBuffer = bufferTemp;
+
+	}
+	else {
+		return;
+	}
+
+
+
+
+
+
+
+}
 void listarTodos() {
 	if (*contadorPessoas == 0) {
 		printf("-----------------\n");
@@ -273,6 +322,30 @@ void buscarNome() {
 	printf("\nPessoa nao encontrada\n\n");
 }
 void buscarEmail() {
+
+	int* contador = (int*)((char*)pBuffer + 2 * sizeof(int));
+	*contador = 0;
+
+	char* emailLido = (char*)pBuffer + Base + sizeof(int) + TamanhoNome;
+
+	printf("\nDigite o nome completo da pessoa que deseja buscar na agenda:");
+	fgets(emailLido, TamanhoEmail, stdin);
+	emailLido[strcspn(emailLido, "\n")] = '\0';
+
+	while (*contador < *contadorPessoas) {
+		void* pessoaAtual = (char*)pBuffer + Base + EspacoTemporario + (*contador * TamanhoPessoa);
+		int* idade = (int*)pessoaAtual;
+		char* nome = (char*)(idade + 1);
+		char* email = nome + TamanhoNome;
+
+		if (strcmp(emailLido, email) == 0) {
+			printf("Nome = %s | Idade = %d | Email = %s\n", nome, *idade, email);
+			return;
+		}
+
+		(*contador)++;
+	}
+	printf("\nEmail nao encontrado\n\n");
 
 }
 
