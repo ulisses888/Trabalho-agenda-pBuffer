@@ -155,7 +155,7 @@ void removerPessoa() {
 		}
 		(*opcao)--;
 
-		for (*opcao;*opcao < *contadorPessoas;(*opcao)++) {
+		for (; *opcao < (*contadorPessoas) - 1; (*opcao)++) {
 			void* proximaPessoa = (char*)pBuffer + Base + EspacoTemporario + ((*opcao + 1) * TamanhoPessoa);
 			void* pessoaAtual = (char*)pBuffer + Base + EspacoTemporario + (*opcao * TamanhoPessoa);
 			memmove(pessoaAtual, proximaPessoa, TamanhoPessoa);
@@ -171,6 +171,8 @@ void removerPessoa() {
 			exit(1);
 		}
 		pBuffer = bufferTemp;
+
+		contadorPessoas = (int*)pBuffer;
 
 	}
 	else {
