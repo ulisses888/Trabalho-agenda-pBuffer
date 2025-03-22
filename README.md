@@ -17,6 +17,3 @@ Regras:
 1 - Nem mesmo como parâmetro de função. Só ponteiros que apontam para dentro do pBuffer.
 2 - Exemplo do que não pode: int c; char a; int v[10];  void Funcao(int parametro)
 2 - Não pode usar struct em todo o programa.
-
-Entregar link de um vídeo explicando o código e mostrando alguns testes e ao final o resultado do DrMemory ou Valgrind.
-Vou perguntar no 1:1 sobre a sua implementação. Posso pedir para fazer alguma modificação no código na nossa conversa. O objetivo é saber se entenderam o que fizeram.
